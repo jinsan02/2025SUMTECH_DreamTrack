@@ -1,0 +1,20 @@
+# 환경 변수
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 에디터 / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# 출력물
+outputs/
+*.log
