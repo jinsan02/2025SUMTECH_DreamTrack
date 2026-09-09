@@ -178,19 +178,118 @@ def generate_gap_and_questions(full_report_markdown: str) -> Optional[Dict[str, 
         return None
 
 
- user_prompt = f"""
-    [목표 분야]
-    {target_field}
-
-    [최종 로드맵 (AI #3의 산출물)]
-    {json.dumps(final_roadmap, ensure_ascii=False, indent=2)}
-
-    [웹 검색 결과 (참조용)]
-    {json.dumps(google_search_results, ensure_ascii=False, indent=2)}
-    
-    위 정보를 바탕으로, [목표 분야]와 [최종 로드맵]을 연결지어
-    친화적인 최신 트렌드 퀴즈 **1개**를 요청한 JSON 형식으로 생성하세요.
+# -----------------------------------------------------------------
+# 3) AI #3: 최종 단기 로드맵 확정 (JSON)
+# -----------------------------------------------------------------
+def generate_final_roadmap(
+    full_report_markdown: str,
+    deep_dive_answers: List[Dict[str, Any]],
+    horizon_days: int = 14
+) -> Optional[Dict[str, Any]]:
     """
+    [AI #3]
+    AI #1의 종합 리포트와 AI #2 심화질문에 대한 학생의 답변을 함께 읽고,
+    실행 가능한 단기(기본 14일) 로드맵을 JSON으로 확정합니다.
+    """
+    print(f"Step 3: [AI #3] {horizon_days}일 최종 로드맵 확정 중...")
+
+    system_prompt = f"""
+    당신은 'DreamTrack'의 3단계 '최종 로드맵 전략가(Roadmap Strategist)' AI입니다.
+    [AI #1 종합 리포트]가 제시한 Gap과, [학생의 심화 답변]에 담긴 실제 선호·제약을
+    함께 반영하여 **지금 당장 시작할 수 있는 단기 실행 계획**을 확정하세요.
+
+    # 1. 절대 규칙
+
+    ## 1.1. 기간
+    - 로드맵 기간은 **정확히 {horizon_days}일**입니다. 그보다 길게 잡지 마세요.
+    - 목적은 '완성'이 아니라 **'즉각적인 성취 경험'**입니다.
+      학생이 지치지 않도록 하루 분량을 작게 쪼개세요.
+
+    ## 1.2. 카테고리 (매우 중요)
+    - 각 활동의 `category`는 반드시 아래 **세 가지 중 하나**만 사용하세요.
+      - `교내`   : 학교 안에서 할 수 있는 활동 (동아리, 교내 대회, 수행평가, 선생님 상담 등)
+      - `교외`   : 학교 밖 활동 (외부 경진대회, 온라인 커뮤니티, 공공데이터 활용 등)
+      - `자기계발`: 혼자 하는 학습 (강의 수강, 문제 풀이, 독서, 기술 블로그 읽기 등)
+    - `skills`, `experience` 같은 영어 일반 용어를 쓰지 마세요.
+      이 값은 후속 서비스의 UI 분류 기준으로 그대로 사용됩니다.
+
+    ## 1.3. 학생의 답변을 우선한다
+    - [학생의 심화 답변]이 리포트의 제안과 충돌하면 **학생의 답변을 따르세요.**
+    - 학생이 밝힌 주당 투자 가능 시간을 넘기지 마세요.
+    - 학생이 부담스럽다고 말한 방식(예: 논문 읽기)은 계획에 넣지 마세요.
+
+    ## 1.4. 활동 구체화
+    - `description`에는 '무엇을 하는지'를 학생이 바로 실행할 수 있는 수준으로 쓰세요.
+    - 교내·교외 활동을 제안할 때는 학생의 성향과 목표 분야에 맞는
+      **유사한 학교 프로그램이나 경진대회의 유형**을 함께 언급하세요.
+    - 근거 없는 특정 대회명·일정·기관명을 지어내지 마세요.
+      확실하지 않으면 활동 유형으로만 쓰세요.
+
+    # 2. 출력 형식 (JSON)
+    - 다른 설명 없이, 반드시 아래 JSON 형식으로만 응답하세요.
+
+    [JSON 형식]
+    {{
+      "horizonDays": {horizon_days},
+      "goalField": "학생의 목표 분야",
+      "focus": "이 {horizon_days}일 동안 집중할 단 하나의 목표를 한 문장으로",
+      "rationale": "왜 이 계획인지 2~3문장. 학생의 심화 답변을 근거로 설명",
+      "tasks": [
+        {{
+          "id": 1,
+          "dayRange": "1-2",
+          "title": "활동 이름",
+          "category": "교내 | 교외 | 자기계발 중 하나",
+          "description": "학생이 바로 실행할 수 있는 구체적인 행동",
+          "expectedOutcome": "이 활동을 마치면 남는 결과물",
+          "estimatedHours": 2
+        }}
+      ],
+      "nextCheckpoint": "{horizon_days}일 뒤에 무엇을 확인하면 되는지 한 문장"
+    }}
+    """
+
+    user_prompt = f"""
+    [AI #1 종합 리포트 (Markdown)]
+
+    {full_report_markdown}
+
+    ---
+    [AI #2 심화질문에 대한 학생의 답변]
+
+    {json.dumps(deep_dive_answers, ensure_ascii=False, indent=2)}
+
+    ---
+    위 리포트와 학생의 실제 답변을 함께 반영하여,
+    {horizon_days}일 단기 로드맵을 요청한 JSON 형식으로 확정해 주세요.
+    """
+
+    try:
+        resp = client.chat.completions.create(
+            model=MODEL_NAME,
+            response_format={"type": "json_object"},
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+        )
+        roadmap = json.loads(resp.choices[0].message.content)
+
+        # 카테고리 계약 검증 — 후속 UI가 이 세 값만 처리한다
+        allowed = {"교내", "교외", "자기계발"}
+        bad = [t for t in roadmap.get("tasks", []) if t.get("category") not in allowed]
+        if bad:
+            print(f"Step 3 경고: 허용되지 않은 category {len(bad)}건 -> '자기계발'로 보정합니다.")
+            for t in bad:
+                t["category"] = "자기계발"
+
+        roadmap["horizonDays"] = horizon_days
+        print(f"Step 3: [AI #3] 로드맵 확정 완료 (활동 {len(roadmap.get('tasks', []))}개).")
+        return roadmap
+    except Exception as e:
+        print(f"Step 3 오류: {e}")
+        return None
+
 
 # -----------------------------------------------------------------
 # 4) AI #4: 직무 관련 퀴즈 생성 (동기부여 초점)
