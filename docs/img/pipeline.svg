@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-12 0 1024 452" width="1024" height="452" role="img" aria-label="24문항 설문 JSON이 AI #1 진단 리포트(Markdown), AI #2 Gap 요약과 심화질문 5개(JSON), 학생 답변과 리포트를 받은 AI #3 14일 로드맵(JSON), AI #4 트렌드 퀴즈(JSON)로 이어진다. AI #2는 질문 유형, AI #3은 기간 14일과 활동 분류 3종, AI #4는 로드맵 활동 연결을 규칙으로 고정했다">
+<title>4단계 LLM 파이프라인 — 단계 사이에 넘길 형식을 계약으로 고정했다</title>
+<style>
+  text { font-family: system-ui, -apple-system, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; fill: #1f2328; }
+  .ink { fill: #1f2328; } .sub { fill: #59636e; } .muted { fill: #818b98; } .lbl { fill: #59636e; }
+  .grid { stroke: #eaeef2; stroke-width: 1; } .base { stroke: #afb8c1; stroke-width: 1; }
+  .s1 { fill: #2a78d6; } .s2 { fill: #eb6834; } .s3 { fill: #1baf7a; } .s4 { fill: #eda100; }
+  .s5 { fill: #e87ba4; } .s6 { fill: #008300; } .s7 { fill: #4a3aa7; } .s8 { fill: #e34948; }
+  .dim { fill: #d0d7de; } .dim2 { fill: #8c959f; }
+  .box  { fill: #f6f8fa; stroke: #d0d7de; stroke-width: 1.2; }
+  .em   { fill: #e3eefb; stroke: #2a78d6; stroke-width: 1.6; }
+  .mute { fill: #ffffff; stroke: #d0d7de; stroke-width: 1.2; }
+  .k-auto { fill: #e0f5ec; stroke: #1baf7a; stroke-width: 1.4; }
+  .k-man  { fill: #fdf3d8; stroke: #eda100; stroke-width: 1.4; }
+  .k-todo { fill: none; stroke: #8c959f; stroke-width: 1.2; stroke-dasharray: 5 4; }
+  .grp { fill: none; stroke: #d0d7de; stroke-width: 1; stroke-dasharray: 3 3; }
+  .ln { stroke: #6e7781; stroke-width: 1.4; fill: none; } .ah { fill: #6e7781; }
+  .ln-em { stroke: #2a78d6; stroke-width: 2; fill: none; } .ah-em { fill: #2a78d6; }
+  .dash { stroke-dasharray: 5 4; }
+  @media (prefers-color-scheme: dark) {
+    text, .ink { fill: #e6edf3; } .sub, .lbl { fill: #9198a1; } .muted { fill: #8b949e; }
+    .grid { stroke: #262c36; } .base { stroke: #59636e; }
+    .s1 { fill: #3987e5; } .s2 { fill: #d95926; } .s3 { fill: #199e70; } .s4 { fill: #c98500; }
+    .s5 { fill: #d55181; } .s6 { fill: #008300; } .s7 { fill: #9085e9; } .s8 { fill: #e66767; }
+    .dim { fill: #3d444d; } .dim2 { fill: #6e7681; }
+    .box  { fill: #161b22; stroke: #3d444d; }
+    .em   { fill: #0f2340; stroke: #3987e5; }
+    .mute { fill: #0d1117; stroke: #3d444d; }
+    .k-auto { fill: #0c2a1f; stroke: #199e70; } .k-man { fill: #2e2408; stroke: #c98500; } .k-todo { stroke: #6e7681; }
+    .grp { stroke: #3d444d; }
+    .ln { stroke: #8b949e; } .ah { fill: #8b949e; } .ln-em { stroke: #3987e5; } .ah-em { fill: #3987e5; }
+  }
+</style>
+<text x="0" y="24" font-size="18" font-weight="600" class="ink">4단계 LLM 파이프라인 — 단계 사이에 넘길 형식을 계약으로 고정했다</text><text x="0" y="48" font-size="14" class="sub">앞 단계의 산출물이 다음 단계의 입력 · 4단계 모두 gpt-5-nano-2025-08-07 · AI #2~#4는 JSON 모드 · 파란 상자 = 출력이 어긋나 규칙으로 고친 지점</text>
+<g transform="translate(0,64)">
+<rect class="box" x="0" y="30" width="172" height="70" rx="8"/>
+<text x="86" y="50.5" font-size="14" text-anchor="middle" font-weight="600" class="ink">설문 24문항</text>
+<text x="86" y="69.5" font-size="13" text-anchor="middle" class="sub">JSON</text>
+<text x="86" y="88.5" font-size="13" text-anchor="middle" class="sub">questionset.json</text>
+<rect class="box" x="207" y="30" width="172" height="70" rx="8"/>
+<text x="293" y="50.5" font-size="14" text-anchor="middle" font-weight="600" class="ink">AI #1 진단 분석가</text>
+<text x="293" y="69.5" font-size="13" text-anchor="middle" class="sub">8단계 리포트</text>
+<text x="293" y="88.5" font-size="13" text-anchor="middle" class="sub">Markdown</text>
+<rect class="box" x="414" y="30" width="172" height="70" rx="8"/>
+<text x="500" y="50.5" font-size="14" text-anchor="middle" font-weight="600" class="ink">AI #2 심층 면접관</text>
+<text x="500" y="69.5" font-size="13" text-anchor="middle" class="sub">Gap 요약 + 질문 5개</text>
+<text x="500" y="88.5" font-size="13" text-anchor="middle" class="sub">JSON</text>
+<rect class="box" x="621" y="30" width="172" height="70" rx="8"/>
+<text x="707" y="50.5" font-size="14" text-anchor="middle" font-weight="600" class="ink">AI #3 로드맵 전략가</text>
+<text x="707" y="69.5" font-size="13" text-anchor="middle" class="sub">14일 로드맵</text>
+<text x="707" y="88.5" font-size="13" text-anchor="middle" class="sub">JSON</text>
+<rect class="box" x="828" y="30" width="172" height="70" rx="8"/>
+<text x="914" y="50.5" font-size="14" text-anchor="middle" font-weight="600" class="ink">AI #4 동기부여 튜터</text>
+<text x="914" y="69.5" font-size="13" text-anchor="middle" class="sub">트렌드 퀴즈 1문항</text>
+<text x="914" y="88.5" font-size="13" text-anchor="middle" class="sub">JSON</text>
+<polyline class="ln" points="172,65 198,65"/>
+<polygon class="ah" points="207,65 198,60 198,70"/>
+<polyline class="ln" points="379,65 405,65"/>
+<polygon class="ah" points="414,65 405,60 405,70"/>
+<polyline class="ln" points="586,65 612,65"/>
+<polygon class="ah" points="621,65 612,60 612,70"/>
+<polyline class="ln" points="793,65 819,65"/>
+<polygon class="ah" points="828,65 819,60 819,70"/>
+<polyline class="ln" points="293,30 293,12 677,12 677,21"/>
+<polygon class="ah" points="677,30 682,21 672,21"/>
+<text x="485" y="8" font-size="12.5" class="lbl" text-anchor="middle">리포트도 함께</text>
+<text x="603" y="124" font-size="12" text-anchor="middle" class="lbl">+ 학생 답변</text>
+<rect class="box" x="207" y="150" width="172" height="92" rx="8"/>
+<text x="293" y="181.5" font-size="14" text-anchor="middle" font-weight="600" class="ink">RIASEC 매핑</text>
+<text x="293" y="200.5" font-size="13" text-anchor="middle" class="sub">리커트 점수 → 6유형</text>
+<text x="293" y="219.5" font-size="13" text-anchor="middle" class="sub">선택·주관식과 교차</text>
+<line class="ln dash" x1="293" y1="100" x2="293" y2="150"/>
+<rect class="em" x="414" y="150" width="172" height="92" rx="8"/>
+<text x="500" y="181.5" font-size="14" text-anchor="middle" font-weight="600" class="ink">질문 = 개인 검증형</text>
+<text x="500" y="200.5" font-size="13" text-anchor="middle" class="sub">과제형 질문을 막음</text>
+<text x="500" y="219.5" font-size="13" text-anchor="middle" class="sub">JSON 모드</text>
+<line class="ln dash" x1="500" y1="100" x2="500" y2="150"/>
+<rect class="em" x="621" y="150" width="172" height="92" rx="8"/>
+<text x="707" y="172" font-size="14" text-anchor="middle" font-weight="600" class="ink">horizonDays: 14</text>
+<text x="707" y="191" font-size="13" text-anchor="middle" class="sub">활동 분류 3종만</text>
+<text x="707" y="210" font-size="13" text-anchor="middle" class="sub">교내 · 교외 · 자기계발</text>
+<text x="707" y="229" font-size="13" text-anchor="middle" class="sub">JSON 모드</text>
+<line class="ln dash" x1="707" y1="100" x2="707" y2="150"/>
+<rect class="em" x="828" y="150" width="172" height="92" rx="8"/>
+<text x="914" y="181.5" font-size="14" text-anchor="middle" font-weight="600" class="ink">해설에 로드맵 활동</text>
+<text x="914" y="200.5" font-size="13" text-anchor="middle" class="sub">퀴즈를 로드맵에 연결</text>
+<text x="914" y="219.5" font-size="13" text-anchor="middle" class="sub">JSON 모드</text>
+<line class="ln dash" x1="914" y1="100" x2="914" y2="150"/>
+<text x="0" y="176" font-size="14" class="ink" font-weight="600">단계별 계약</text>
+<text x="0" y="196" font-size="12" class="lbl">(형식과 값의 범위)</text>
+<text x="0" y="270" font-size="13" class="lbl">바꾸기 전 출력: AI #2 "ML 파이프라인을 제시해 보라" 같은 과제형 질문 · AI #3 3개월·6개월 계획과 skills / experience 같은 일반 분류</text>
+<text x="0" y="292" font-size="13" class="lbl">· AI #4 로드맵과 연결되지 않는 단독 퀴즈 — 각각 규칙을 명시해 고쳤다.</text>
+<text x="0" y="326" font-size="13" class="muted">자동 테스트와 정확도 측정은 없다. 출력은 해커톤 기간 중 눈으로 확인했다. UI·실제 검색 API 연동은 이 저장소 범위 밖이다.</text>
+</g>
+</svg>

@@ -4,6 +4,8 @@
 
 > **2025 SUMTECH 해커톤 장려상** · 5인 팀 · 담당: AI 파이프라인 설계, 단계 간 데이터 계약, 프롬프트 설계
 
+<p align="center"><img src="docs/img/pipeline.svg" alt="4단계 LLM 파이프라인과 단계별 계약: 설문 → 진단 리포트 → 심화질문 → 14일 로드맵 → 트렌드 퀴즈" width="100%"></p>
+
 ---
 
 ## 1. 무엇을 풀려고 했나
@@ -23,25 +25,7 @@ DreamTrack은 **직업을 추천하는 대신 현재 상태와 목표 사이의 
 | **AI #3** | 최종 로드맵 전략가 | AI #1 리포트 + AI #2 답변 | 14일 확정 로드맵 (JSON) | 학생의 최종 의사를 반영해 실행 계획 확정 |
 | **AI #4** | 동기부여 튜터 | 최종 로드맵 (JSON) + 목표 분야 | 최신 트렌드 퀴즈 1문항 (JSON) | 로드맵 실행 동기 부여, 관심 분야 최신 정보 연결 |
 
-**데이터 흐름**
-
-```
-설문 응답 (JSON)
-      │  AI #1  generate_initial_report()
-      ▼
-진단 리포트 (Markdown)  ──────────────┐
-      │  AI #2  generate_gap_and_questions()
-      ▼                              │
-심화질문 5개 (JSON) → 학생 답변       │
-      │                              │
-      ▼  AI #3  generate_final_roadmap()  ◀┘
-14일 로드맵 (JSON)
-      │  AI #4  generate_quiz()
-      ▼
-트렌드 퀴즈 (JSON)
-```
-
-정성적 정보(Markdown 리포트)를 정량적 실행 계획(JSON 로드맵)으로 넘기는 지점이 이 구조의 핵심이다. AI #2와 AI #4는 `response_format={"type": "json_object"}`로 출력 형식을 고정해, 다음 단계가 파싱에 실패하지 않도록 했다.
+정성적 정보(Markdown 리포트)를 정량적 실행 계획(JSON 로드맵)으로 넘기는 지점이 이 구조의 핵심이다. AI #2·#3·#4는 `response_format={"type": "json_object"}`로 출력 형식을 고정해, 다음 단계가 파싱에 실패하지 않도록 했다.
 
 ## 3. 설계에서 실제로 바꾼 것
 
@@ -61,6 +45,11 @@ DreamTrack은 **직업을 추천하는 대신 현재 상태와 목표 사이의 
 
 ## 4. 설문 세트
 
+<p align="center"><img src="docs/img/survey.svg" alt="설문 24문항 구성: 리커트 7 · 선택 10 · 주관식 7" width="100%"></p>
+
+<details>
+<summary><b>문항 구성 상세</b></summary>
+
 `questionset.json`에 24문항이 들어 있다.
 
 - **Q1–Q7** 리커트 5점 척도 — Holland RIASEC 6유형(R·I·A·S·E·C) 매핑용
@@ -68,6 +57,7 @@ DreamTrack은 **직업을 추천하는 대신 현재 상태와 목표 사이의 
 - **Q18–Q24** 주관식 — 희망 진로와 그 이유, 주도적으로 한 활동, 어려움을 넘긴 경험
 
 AI #1은 리커트 점수를 RIASEC에 매핑하고 선택·주관식 응답과 교차해 강점과 목표를 뽑는다.
+</details>
 
 ## 5. 기술 스택
 
@@ -80,7 +70,8 @@ AI #1은 리커트 점수를 RIASEC에 매핑하고 선택·주관식 응답과 
 
 의존성을 두 개로 묶은 것은 의도적이다. 해커톤 기간 안에 프레임워크 학습 비용을 쓰지 않고 파이프라인 구조 자체에 시간을 쓰기 위해서였다. 모델도 단계별로 바꾸지 않고 하나로 통일해, **프롬프트 복잡도가 결과를 얼마나 좌우하는지**를 모델 변수 없이 확인하려 했다.
 
-## 6. 저장소 구성
+<details>
+<summary><b>6. 저장소 구성</b></summary>
 
 ```
 main.py             4단계 파이프라인 구현과 데모 실행 블록
@@ -88,8 +79,10 @@ questionset.json    24문항 설문 세트
 requirements.txt    openai, python-dotenv
 .env.example        환경변수 템플릿 (실제 키는 커밋하지 않음)
 ```
+</details>
 
-## 7. 실행
+<details>
+<summary><b>7. 실행</b></summary>
 
 ```bash
 git clone https://github.com/jinsan02/2025SUMTECH_DreamTrack.git
@@ -104,6 +97,7 @@ python main.py
 ```
 
 `main.py`의 `__main__` 블록은 설문 응답과 심화질문 답변을 하드코딩한 **데모 시뮬레이션**이다. 실제 사용자 입력을 받는 UI는 이 저장소 범위 밖이다.
+</details>
 
 ## 8. 한계와 확인하지 않은 범위
 
